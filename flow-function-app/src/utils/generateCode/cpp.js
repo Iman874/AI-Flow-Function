@@ -1,0 +1,15 @@
+export default function(pseudo) {
+  return pseudo.split('\n').map(line => {
+    if (line.startsWith('IF')) return 'if (condition) {';
+    if (line.startsWith('RETURN')) return 'return value;';
+    if (line.startsWith('DECLARE')) return 'int ' + line.replace('DECLARE', '') + ';';
+    if (line.startsWith('LOOP')) return 'for (int i = 0; i < N; ++i) {';
+    if (line.startsWith('FUNCTION')) return 'void function_name() {';
+    if (line.startsWith('PARAM')) return '// param';
+    if (line.startsWith('PROCESS')) return '// process';
+    if (line.startsWith('ELSE')) return '} else {';
+    if (line.startsWith('READ')) return 'cin >> ' + line.replace('READ', '').trim() + ';';
+    if (line.startsWith('PRINT')) return 'cout << ' + line.replace('PRINT', '').trim() + ' << endl;';
+    return '// ' + line;
+  }).join('\n');
+}
