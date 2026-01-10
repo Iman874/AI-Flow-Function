@@ -5,7 +5,7 @@ import { Handle, Position, useReactFlow } from "reactflow";
 // Condition node with True / False outputs
 const ConditionNode = ({ id, data, selected, patchNode }) => {
   const [collapsed, setCollapsed] = useState(!!data?.collapsed);
-  const [condType, setCondType] = useState(data?.condType || "if-else"); // 'if-else' | 'switch'
+  const [condType, setCondType] = useState(data?.condType || "if-else"); // 'if-only' | 'if-else' | 'switch'
   const [defaultMode, setDefaultMode] = useState(data?.defaultMode || "none"); // 'none' | 'variable' | 'custom'
   const [defaultCustom, setDefaultCustom] = useState(data?.defaultCustom || "");
   const [defaultOpen, setDefaultOpen] = useState(false);
@@ -72,19 +72,22 @@ const ConditionNode = ({ id, data, selected, patchNode }) => {
             onChange={(e) => handleCondTypeChange(e.target.value)}
             className="w-full bg-gray-400 text-white rounded-md px-2 py-2 text-center text-xs font-medium outline-none"
           >
+            <option value="if-only" className="text-black">If Only (True branch)</option>
             <option value="if-else" className="text-black">If Else</option>
             <option value="switch" className="text-black">Switch</option>
           </select>
         </div>
       )}
       <div className={`text-white flex items-center justify-center mt-3 px-4 py-3 font-semibold text-sm ${data.styleSizeMode==='expand' ? '' : 'rounded-md'}`}
-        style={{ backgroundColor: data.styleHeaderBg || '#a855f7' }}
+        style={{ backgroundColor: data.styleHeaderBg || '#87ceeb', color: '#003d5c' }}
       >Condition</div>
       {!collapsed && (
         <>
-          <div className={`mt-3 grid ${condType === 'switch' ? 'grid-cols-3' : 'grid-cols-2'} gap-3`}>
+          <div className={`mt-3 grid ${condType === 'switch' ? 'grid-cols-3' : condType === 'if-only' ? 'grid-cols-1' : 'grid-cols-2'} gap-3`}>
             <div className="rounded-md px-2 py-2 text-center text-xs font-semibold" style={{ backgroundColor: data.styleTrueBg || '#6ee7b7', color:'#065f46' }}>True</div>
-            <div className="rounded-md px-2 py-2 text-center text-xs font-semibold" style={{ backgroundColor: data.styleFalseBg || '#fda4af', color:'#9f1239' }}>False</div>
+            {condType !== 'if-only' && (
+              <div className="rounded-md px-2 py-2 text-center text-xs font-semibold" style={{ backgroundColor: data.styleFalseBg || '#fda4af', color:'#9f1239' }}>False</div>
+            )}
             {condType === 'switch' && (
               <button
                 className={`rounded-md px-2 py-2 text-center text-xs font-semibold ${defaultOpen || defaultMode !== 'none' ? 'bg-indigo-400 text-white' : 'bg-indigo-200 text-indigo-900'}`}
@@ -128,9 +131,9 @@ const ConditionNode = ({ id, data, selected, patchNode }) => {
       <Handle type="target" position={Position.Top} id="input" />
       {/* default variable value input */}
       <Handle type="target" position={Position.Right} id="defaultVarInput" style={{ background: "#8b5cf6" }} />
-      <Handle type="source" position={Position.Bottom} id="trueOutput" style={{ left: "25%" }} />
-      <Handle type="source" position={Position.Bottom} id="falseOutput" style={{ left: "50%" }} />
-      {condType === 'switch' && <Handle type="source" position={Position.Bottom} id="defaultOutput" style={{ left: "75%" }} />}
+      <Handle type="source" position={Position.Bottom} id="trueOutput" style={{ left: condType === 'if-only' ? "50%" : "25%" }} />
+      {condType !== 'if-only' && <Handle type="source" position={Position.Bottom} id="falseOutput" style={{ left: "50%" }} />}
+      {condType === 'switch' && <Handle type="source" position={Position.Bottom} id="defaultOutput" style={{ left: condType === 'if-only' ? "50%" : "75%" }} />}
     </div>
   );
 };

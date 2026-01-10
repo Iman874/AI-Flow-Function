@@ -112,7 +112,7 @@ const LoopNode = ({ id, data, selected, patchNode }) => {
         </select>
       )}
       <div className={`text-white flex items-center justify-center mt-3 px-4 py-3 font-semibold text-sm ${data.styleSizeMode==='expand' ? '' : 'rounded-md'}`}
-        style={{ backgroundColor: data.styleHeaderBg || '#f97316' }}
+        style={{ backgroundColor: data.styleHeaderBg || '#87ceeb', color: '#003d5c' }}
       >Loop</div>
       {!collapsed && (
         <>

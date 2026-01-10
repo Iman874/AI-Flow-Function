@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { generatePseudo } from "../utils/generatePseudo";
 import { generateCode } from "../utils/generateCode";
 
 const LANGUAGES = [
@@ -14,9 +13,17 @@ const LANGUAGES = [
 
 export default function GenerateCodeModal({ nodes, edges, onClose }) {
   const [lang, setLang] = useState("pseudo");
-  const pseudoArr = generatePseudo(nodes, edges);
-  const pseudo = Array.isArray(pseudoArr) ? pseudoArr.join("\n") : String(pseudoArr);
-  const code = lang === "pseudo" ? pseudo : generateCode(lang, nodes, edges);
+
+  // Generate code with error handling
+  let code = '';
+  let hasError = false;
+  try {
+    code = generateCode(lang, nodes, edges);
+    hasError = code.includes('// Validation Errors:') || code.includes('// Error generating code:');
+  } catch (error) {
+    code = `// Error: ${error.message}`;
+    hasError = true;
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);

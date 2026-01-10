@@ -1,14 +1,50 @@
 import NodeWindowControls from "./NodeWindowControls.jsx";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Handle, Position } from "reactflow";
+import { Handle, Position, useReactFlow } from "reactflow";
 
-const ProcessNode = ({ data, selected }) => {
+const PROCESS_TEMPLATES = [
+  { key: "custom", label: "Custom" },
+  { key: "addition", label: "Addition (a + b)" },
+  { key: "subtraction", label: "Subtraction (a - b)" },
+  { key: "multiplication", label: "Multiplication (a * b)" },
+  { key: "division", label: "Division (a / b)" },
+  { key: "assignment", label: "Assignment (a = b)" },
+];
+const ProcessNode = ({ id, data, selected, patchNode }) => {
   const connectedVars = data?.connectedVariables || [];
   const [collapsed, setCollapsed] = useState(!!data?.collapsed);
+  const [template, setTemplate] = useState(data?.template || "custom");
+  const { setNodes } = useReactFlow();
+
+  const updateData = useCallback(
+    (patch) => {
+      if (patchNode) {
+        patchNode(id, patch);
+      } else {
+        setNodes((nds) => nds.map((n) => (n.id === id ? { ...n, data: { ...n.data, ...patch } } : n)));
+      }
+    },
+    [id, patchNode, setNodes]
+  );
+
   React.useEffect(() => {
     if ((data?.collapsed ? true : false) !== collapsed) setCollapsed(!!data?.collapsed);
   }, [data?.collapsed]);
+  React.useEffect(() => {
+    if ((data?.template || "custom") !== template) setTemplate(data?.template || "custom");
+  }, [data?.template]);
+
+  const handleTemplateChange = (val) => {
+    setTemplate(val);
+    const label = val === "custom" ? (data.label || "Process") : `Process: ${val}`;
+    updateData({ template: val, label });
+  };
   const info = `Process vars: ${connectedVars.length ? connectedVars.join(', ') : '-'}`;
+  const summaryLabel = (() => {
+    const base = template !== "custom" ? `Process: ${template}` : (data.label || "Process");
+    if (connectedVars.length) return `${base} → ${connectedVars.join(', ')}`;
+    return `${base} (hubungkan variable ke kanan)`;
+  })();
 
   return (
     <div
@@ -27,7 +63,22 @@ const ProcessNode = ({ data, selected }) => {
       }}
     >
       <NodeWindowControls collapsed={collapsed} onToggle={() => setCollapsed(v=>!v)} />
-      <div className={`font-semibold w-full px-2 py-2 ${data.styleSizeMode==='expand' ? '' : ''}`} style={{ color: '#7e22ce', backgroundColor: data.styleHeaderBg || 'transparent', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>Process</div>
+      <div className={`font-semibold w-full px-3 py-2.5 ${data.styleSizeMode==='expand' ? '' : ''}`} style={{ color: '#003d5c', backgroundColor: data.styleHeaderBg || '#87ceeb', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>{summaryLabel}</div>
+
+      {!collapsed && (
+        <div className="mt-2 w-full">
+          <label className="block text-[11px] text-gray-500 mb-1">Template</label>
+          <select
+            value={template}
+            onChange={(e) => handleTemplateChange(e.target.value)}
+            className="w-full text-sm border border-gray-300 rounded px-2 py-1 bg-white"
+          >
+            {PROCESS_TEMPLATES.map((t) => (
+              <option key={t.key} value={t.key}>{t.label}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Daftar variable yang terhubung (kanan) */}
       {!collapsed && connectedVars.length > 0 && (
@@ -46,7 +97,7 @@ const ProcessNode = ({ data, selected }) => {
       {/* Kalau belum ada variable */}
       {!collapsed && connectedVars.length === 0 && (
         <div className="text-gray-400 italic mt-2 text-sm">
-          no variable connected
+          Hubungkan variable ke handle kanan untuk otomatis menampilkan rangkuman.
         </div>
       )}
 

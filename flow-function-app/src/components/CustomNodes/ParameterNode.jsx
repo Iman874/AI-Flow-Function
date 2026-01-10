@@ -27,7 +27,7 @@ const ParameterNode = ({ id, data, selected }) => {
       }}
     >
       <NodeWindowControls collapsed={collapsed} onToggle={() => setCollapsed(v=>!v)} />
-      <div className={`font-semibold w-full px-2 py-2`} style={{ color:'#1d4ed8', backgroundColor: data.styleHeaderBg || 'transparent', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>Parameter</div>
+      <div className={`font-semibold w-full px-3 py-2.5`} style={{ color:'#003d5c', backgroundColor: data.styleHeaderBg || '#87ceeb', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>Parameter</div>
 
       {!collapsed && (
         <>
