@@ -101,7 +101,7 @@ const VariableNode = ({ id, data, selected }) => {
     >
       <NodeWindowControls collapsed={collapsed} onToggle={() => { setCollapsed(v=>!v); updateNodeData({ collapsed: !collapsed }); }} />
       <div className={`text-white flex items-center gap-2 px-4 py-3 justify-start ${data.styleSizeMode==='expand' ? '' : 'rounded-md'}`}
-        style={{ backgroundColor: data.styleHeaderBg || '#0e7490' }}
+        style={{ backgroundColor: data.styleHeaderBg || '#87ceeb', color: '#003d5c' }}
       >
         <span className="text-lg">📘</span>
         <span className="font-semibold">Variabel</span>

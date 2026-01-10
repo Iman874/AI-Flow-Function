@@ -15,7 +15,7 @@ const InputNode = ({ id, data, selected, patchNode }) => {
     <div className={`rounded-2xl border p-4 shadow-md bg-white
       ${selected ? "ring-2 ring-indigo-400" : ""}`}>
 
-      <div className="text-xs font-bold text-indigo-600 mb-2">
+      <div className="text-xs font-bold text-white mb-3 px-2 py-2 rounded" style={{ backgroundColor: '#87ceeb', color: '#003d5c' }}>
         Input
       </div>
 

@@ -21,7 +21,7 @@ const IfNode = ({ data, selected }) => {
       }}
     >
       <NodeWindowControls collapsed={collapsed} onToggle={() => setCollapsed(v=>!v)} />
-      <div className={`font-semibold text-center w-full px-2 py-2`} style={{ color:'#065f46', backgroundColor: data.styleHeaderBg || 'transparent', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>{data.label}</div>
+      <div className={`font-semibold text-center w-full px-3 py-2.5`} style={{ color:'#003d5c', backgroundColor: data.styleHeaderBg || '#87ceeb', borderRadius: data.styleSizeMode==='expand' ? 0 : 4 }}>{data.label}</div>
 
       <Handle type="target" position={Position.Left} />
       {!collapsed && <Handle type="source" position={Position.Right} />}

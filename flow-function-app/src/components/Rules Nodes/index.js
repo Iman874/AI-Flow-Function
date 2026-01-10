@@ -25,9 +25,10 @@ const rules = [
 
 export function validateConnection(params, nodes) {
   for (const rule of rules) {
-    if (rule && rule(params, nodes) === false) {
-      return false;
-    }
+    if (!rule) continue;
+    const res = rule(params, nodes);
+    if (res === false) return false;
+    if (res && typeof res === 'object' && res.valid === false) return res;
   }
   return true;
 }

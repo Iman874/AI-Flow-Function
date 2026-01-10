@@ -148,6 +148,7 @@ const NavPropertiesNode = ({ node, onPatch }) => {
                   value={data.condType || "if-else"}
                   onChange={(e) => onPatch(node.id, { condType: e.target.value })}
                 >
+                  <option value="if-only">if-only (true only)</option>
                   <option value="if-else">if-else</option>
                   <option value="switch">switch</option>
                 </select>
@@ -176,6 +177,35 @@ const NavPropertiesNode = ({ node, onPatch }) => {
               {data.defaultMode === "variable" && (
                 <div className="text-[11px] text-gray-500">Connect a variable on the node →</div>
               )}
+            </Section>
+          )}
+
+          {/* Process specific */}
+          {type === "process" && (
+            <Section title="Process">
+              <FieldRow label="Label">
+                <input
+                  className="w-full border rounded px-2 py-1 text-sm"
+                  value={data.label || ""}
+                  onChange={(e) => onPatch(node.id, { label: e.target.value })}
+                  placeholder="Process label"
+                />
+              </FieldRow>
+              <FieldRow label="Template">
+                <select
+                  className="w-full border rounded px-2 py-1 text-sm bg-white"
+                  value={data.template || "custom"}
+                  onChange={(e) => onPatch(node.id, { template: e.target.value })}
+                >
+                  <option value="custom">custom</option>
+                  <option value="addition">addition (a+b)</option>
+                  <option value="subtraction">subtraction (a-b)</option>
+                  <option value="multiplication">multiplication (a*b)</option>
+                  <option value="division">division (a/b)</option>
+                  <option value="assignment">assignment (a=b)</option>
+                </select>
+              </FieldRow>
+              <div className="mt-1 text-[11px] text-gray-500">Connected vars: {connectedVars.join(", ") || "-"}</div>
             </Section>
           )}
 

@@ -56,7 +56,7 @@ const NameFunctionNode = ({ id, data, selected, patchNode }) => {
       <NodeWindowControls collapsed={collapsed} onToggle={handleCollapseToggle} />
       {/* Top banner */}
       <div className={`text-white flex items-center gap-2 px-4 py-3 justify-start ${data.styleSizeMode==='expand' ? '' : 'rounded-md'}`}
-        style={{ backgroundColor: data.styleHeaderBg || '#6366f1' }}
+        style={{ backgroundColor: data.styleHeaderBg || '#87ceeb', color: '#003d5c' }}
       >
         <span className="text-xl">⚙️</span>
         <span className="font-semibold tracking-wide">Function</span>

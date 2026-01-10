@@ -25,7 +25,7 @@ const ReturnNode = ({ data, selected }) => {
     >
       <NodeWindowControls collapsed={collapsed} onToggle={() => setCollapsed(v=>!v)} />
       <div className={`text-white flex items-center justify-center px-4 py-3 font-semibold gap-2 text-sm ${data.styleSizeMode==='expand' ? '' : 'rounded-md'}`}
-        style={{ backgroundColor: data.styleHeaderBg || '#000000' }}
+        style={{ backgroundColor: data.styleHeaderBg || '#87ceeb', color: '#003d5c' }}
       >
         <span>↩️</span> <span>Return</span>
       </div>
